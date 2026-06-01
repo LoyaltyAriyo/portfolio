@@ -1,38 +1,52 @@
 import { useState } from 'react'
 import { Menu, X } from 'lucide-react'
 import { motion } from 'framer-motion'
+import { Link, useLocation } from 'react-router-dom'
 import { navItems } from '../../data/navigation'
 import { Container } from '../ui/Container'
 
 export function Navbar() {
   const [isOpen, setIsOpen] = useState(false)
+  const { pathname } = useLocation()
+
+  const getAnchorHref = (href: string) => (pathname === '/' ? href : `/${href}`)
 
   return (
     <header className="fixed inset-x-0 top-0 z-50 border-b border-white/10 bg-ink-950/72 backdrop-blur-xl">
       <Container className="flex h-16 items-center justify-between">
-        <a href="#home" className="group flex items-center gap-3" aria-label="Amir Mohammadi home">
+        <Link to="/#home" className="group flex items-center gap-3" aria-label="Amir Mohammadi home">
           <span className="grid size-9 place-items-center rounded-lg border border-white/10 bg-white/[0.06] text-sm font-semibold text-white shadow-glow">
             AM
           </span>
           <span className="hidden text-sm font-medium text-slate-200 sm:inline">
             Amir Mohammadi
           </span>
-        </a>
+        </Link>
 
         <nav className="hidden items-center gap-1 md:flex" aria-label="Primary navigation">
-          {navItems.map((item) => (
-            <a
-              key={item.href}
-              href={item.href}
-              className="rounded-lg px-3 py-2 text-sm text-slate-400 transition hover:bg-white/[0.06] hover:text-white"
-            >
-              {item.label}
-            </a>
-          ))}
+          {navItems.map((item) =>
+            item.kind === 'route' ? (
+              <Link
+                key={item.href}
+                to={item.href}
+                className="rounded-lg px-3 py-2 text-sm text-slate-400 transition hover:bg-white/[0.06] hover:text-white"
+              >
+                {item.label}
+              </Link>
+            ) : (
+              <a
+                key={item.href}
+                href={getAnchorHref(item.href)}
+                className="rounded-lg px-3 py-2 text-sm text-slate-400 transition hover:bg-white/[0.06] hover:text-white"
+              >
+                {item.label}
+              </a>
+            ),
+          )}
         </nav>
 
         <a
-          href="#contact"
+          href={getAnchorHref('#contact')}
           className="hidden rounded-lg border border-white/10 bg-white/[0.06] px-4 py-2 text-sm font-medium text-white transition hover:border-accent-400/50 hover:bg-accent-400/10 md:inline-flex"
         >
           Get in touch
@@ -58,16 +72,27 @@ export function Navbar() {
           aria-label="Mobile navigation"
         >
           <div className="mx-auto flex max-w-6xl flex-col gap-1">
-            {navItems.map((item) => (
-              <a
-                key={item.href}
-                href={item.href}
-                onClick={() => setIsOpen(false)}
-                className="rounded-lg px-3 py-3 text-sm font-medium text-slate-300 transition hover:bg-white/[0.06] hover:text-white"
-              >
-                {item.label}
-              </a>
-            ))}
+            {navItems.map((item) =>
+              item.kind === 'route' ? (
+                <Link
+                  key={item.href}
+                  to={item.href}
+                  onClick={() => setIsOpen(false)}
+                  className="rounded-lg px-3 py-3 text-sm font-medium text-slate-300 transition hover:bg-white/[0.06] hover:text-white"
+                >
+                  {item.label}
+                </Link>
+              ) : (
+                <a
+                  key={item.href}
+                  href={getAnchorHref(item.href)}
+                  onClick={() => setIsOpen(false)}
+                  className="rounded-lg px-3 py-3 text-sm font-medium text-slate-300 transition hover:bg-white/[0.06] hover:text-white"
+                >
+                  {item.label}
+                </a>
+              ),
+            )}
           </div>
         </motion.nav>
       ) : null}

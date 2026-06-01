@@ -1,12 +1,12 @@
-import { Award, BriefcaseBusiness, Code2, Mail, Sparkles, UserRound } from 'lucide-react'
+import { Award, BriefcaseBusiness, Mail, Sparkles, UserRound } from 'lucide-react'
 import type { NavItem, SectionItem } from '../types/navigation'
 
 export const navItems: NavItem[] = [
-  { label: 'About', href: '#about' },
-  { label: 'Projects', href: '#projects' },
-  { label: 'Skills', href: '#skills' },
-  { label: 'Experience', href: '#experience' },
-  { label: 'Contact', href: '#contact' },
+  { label: 'About', href: '#about', kind: 'anchor' },
+  { label: 'Projects', href: '#projects', kind: 'anchor' },
+  { label: 'Skills', href: '#skills', kind: 'anchor' },
+  { label: 'Experience', href: '#experience', kind: 'anchor' },
+  { label: 'Contact', href: '#contact', kind: 'anchor' },
 ]
 
 export const sectionItems: SectionItem[] = [
@@ -17,14 +17,6 @@ export const sectionItems: SectionItem[] = [
     description:
       'This area will introduce Amir, his software engineering technician background, and the roles he is targeting.',
     icon: UserRound,
-  },
-  {
-    id: 'projects',
-    eyebrow: 'Projects',
-    title: 'Selected project case studies will live here.',
-    description:
-      'The next phase can add focused projects with outcomes, stacks, links, and recruiter-friendly context.',
-    icon: Code2,
   },
   {
     id: 'skills',

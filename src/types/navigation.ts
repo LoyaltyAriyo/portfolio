@@ -2,7 +2,8 @@ import type { LucideIcon } from 'lucide-react'
 
 export type NavItem = {
   label: string
-  href: `#${string}`
+  href: `#${string}` | `/${string}`
+  kind: 'anchor' | 'route'
 }
 
 export type SectionItem = {
