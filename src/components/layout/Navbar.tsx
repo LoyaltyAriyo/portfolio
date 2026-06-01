@@ -3,7 +3,6 @@ import { Menu, X } from 'lucide-react'
 import { motion } from 'framer-motion'
 import { Link, useLocation } from 'react-router-dom'
 import { navItems } from '../../data/navigation'
-import { resumePath } from '../../data/profile'
 import { Container } from '../ui/Container'
 
 export function Navbar() {
@@ -13,7 +12,7 @@ export function Navbar() {
   const getAnchorHref = (href: string) => (pathname === '/' ? href : `/${href}`)
 
   return (
-    <header className="fixed inset-x-0 top-0 z-50 border-b border-white/10 bg-ink-950/68 shadow-[0_16px_60px_rgba(0,0,0,0.22)] backdrop-blur-2xl">
+    <header className="fixed inset-x-0 top-0 z-50 border-b border-white/10 bg-ink-950/72 backdrop-blur-xl">
       <Container className="flex h-16 items-center justify-between">
         <Link to="/#home" className="group flex items-center gap-3" aria-label="Amir Mohammadi home">
           <span className="grid size-9 place-items-center rounded-lg border border-white/10 bg-white/[0.06] text-sm font-semibold text-white shadow-glow">
@@ -30,31 +29,27 @@ export function Navbar() {
               <Link
                 key={item.href}
                 to={item.href}
-                className="group relative rounded-lg px-3 py-2 text-sm text-slate-400 transition duration-200 hover:bg-white/[0.045] hover:text-white"
+                className="rounded-lg px-3 py-2 text-sm text-slate-400 transition hover:bg-white/[0.06] hover:text-white"
               >
                 {item.label}
-                <span className="absolute inset-x-3 bottom-1 h-px origin-left scale-x-0 bg-accent-300/70 transition-transform duration-200 group-hover:scale-x-100" />
               </Link>
             ) : (
               <a
                 key={item.href}
                 href={getAnchorHref(item.href)}
-                className="group relative rounded-lg px-3 py-2 text-sm text-slate-400 transition duration-200 hover:bg-white/[0.045] hover:text-white"
+                className="rounded-lg px-3 py-2 text-sm text-slate-400 transition hover:bg-white/[0.06] hover:text-white"
               >
                 {item.label}
-                <span className="absolute inset-x-3 bottom-1 h-px origin-left scale-x-0 bg-accent-300/70 transition-transform duration-200 group-hover:scale-x-100" />
               </a>
             ),
           )}
         </nav>
 
         <a
-          href={resumePath}
-          target="_blank"
-          rel="noreferrer"
-          className="hidden rounded-lg border border-accent-300/25 bg-accent-400/10 px-4 py-2 text-sm font-medium text-accent-200 transition duration-200 hover:border-accent-300/45 hover:bg-accent-400/15 md:inline-flex"
+          href={getAnchorHref('#contact')}
+          className="hidden rounded-lg border border-white/10 bg-white/[0.06] px-4 py-2 text-sm font-medium text-white transition hover:border-accent-400/50 hover:bg-accent-400/10 md:inline-flex"
         >
-          Resume
+          Get in touch
         </a>
 
         <button
@@ -98,15 +93,6 @@ export function Navbar() {
                 </a>
               ),
             )}
-            <a
-              href={resumePath}
-              target="_blank"
-              rel="noreferrer"
-              onClick={() => setIsOpen(false)}
-              className="mt-2 rounded-lg border border-accent-300/25 bg-accent-400/10 px-3 py-3 text-sm font-medium text-accent-200 transition hover:border-accent-300/45 hover:bg-accent-400/15"
-            >
-              Resume
-            </a>
           </div>
         </motion.nav>
       ) : null}

@@ -12,7 +12,7 @@ export function TechStackPills({ items, limit }: TechStackPillsProps) {
       {visibleItems.map((item) => (
         <span
           key={item}
-          className="rounded-full border border-white/10 bg-white/[0.05] px-3 py-1 text-xs font-medium text-slate-300 transition duration-200 hover:border-accent-300/35 hover:bg-accent-400/10 hover:text-white"
+          className="rounded-full border border-white/10 bg-white/[0.05] px-3 py-1 text-xs font-medium text-slate-300"
         >
           {item}
         </span>
