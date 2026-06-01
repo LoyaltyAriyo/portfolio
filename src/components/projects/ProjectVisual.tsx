@@ -15,7 +15,7 @@ export function ProjectVisual({ project, large = false }: ProjectVisualProps) {
     <figure
       className={cn(
         'group relative overflow-hidden rounded-2xl border border-white/10 bg-ink-900/80',
-        large ? 'min-h-72' : 'min-h-48',
+        large ? 'min-h-[22rem] lg:min-h-[30rem]' : 'min-h-48',
       )}
     >
       <img
@@ -23,7 +23,7 @@ export function ProjectVisual({ project, large = false }: ProjectVisualProps) {
         alt={`${project.title} ${preview.label}`}
         className={cn(
           'h-full w-full object-cover object-top transition duration-500 group-hover:scale-[1.025]',
-          large ? 'min-h-72' : 'min-h-48',
+          large ? 'min-h-[22rem] lg:min-h-[30rem]' : 'min-h-48',
         )}
       />
       <div className="absolute inset-0 bg-linear-to-t from-ink-950/88 via-ink-950/16 to-transparent" />

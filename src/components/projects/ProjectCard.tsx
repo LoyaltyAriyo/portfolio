@@ -1,4 +1,4 @@
-import { Award, Calendar } from 'lucide-react'
+import { Award, Calendar, ScanText, Sparkles, Database } from 'lucide-react'
 import { motion } from 'framer-motion'
 import type { Project } from '../../types/project'
 import { cn } from '../../lib/utils'
@@ -15,6 +15,12 @@ type ProjectCardProps = {
 export function ProjectCard({ project, variant = 'compact' }: ProjectCardProps) {
   const styles = accentStyles[project.accent.colorName]
   const isFeatured = variant === 'featured'
+  const freshTraceHighlights = [
+    { label: 'OCR Receipt Scanning', icon: ScanText },
+    { label: 'AI Recipe Suggestions', icon: Sparkles },
+    { label: 'Supabase + PostgreSQL', icon: Database },
+  ]
+  const architectureSteps = ['React', 'APIs', 'PostgreSQL', 'Supabase Storage', 'AI']
 
   return (
     <motion.article
@@ -22,11 +28,17 @@ export function ProjectCard({ project, variant = 'compact' }: ProjectCardProps) 
       transition={{ duration: 0.2, ease: 'easeOut' }}
       className={cn(
         'surface-card group h-full overflow-hidden p-5 transition duration-300 hover:border-white/20',
-        isFeatured ? `lg:grid lg:grid-cols-[1.04fr_0.96fr] lg:gap-8 lg:p-7 ${styles.glow}` : 'p-5',
+        isFeatured ? `relative lg:grid lg:grid-cols-[0.92fr_1.08fr] lg:gap-9 lg:p-8 ${styles.glow} before:pointer-events-none before:absolute before:inset-0 before:bg-[radial-gradient(circle_at_78%_18%,rgba(56,189,248,0.16),transparent_38%)] before:opacity-80` : 'p-5',
       )}
     >
-      <div className="flex h-full flex-col">
+      <div className="relative flex h-full flex-col">
         <div className="flex flex-wrap items-center gap-2">
+          {isFeatured ? (
+            <span className="inline-flex items-center gap-1.5 rounded-full border border-accent-300/30 bg-accent-400/10 px-3 py-1 text-xs font-semibold text-accent-200">
+              <Sparkles size={13} />
+              Featured Project
+            </span>
+          ) : null}
           <span className={cn('rounded-full border px-3 py-1 text-xs font-semibold', styles.badge)}>
             {project.category}
           </span>
@@ -62,11 +74,11 @@ export function ProjectCard({ project, variant = 'compact' }: ProjectCardProps) 
         ) : null}
 
         {isFeatured ? (
-          <div className="mt-6 grid grid-cols-3 gap-3">
-            {project.stats.map((stat) => (
-              <div key={stat.label} className="rounded-xl border border-white/10 bg-white/[0.04] p-3">
-                <p className="text-lg font-semibold text-white">{stat.value}</p>
-                <p className="mt-1 text-xs text-slate-500">{stat.label}</p>
+          <div className="mt-6 grid gap-3 sm:grid-cols-3">
+            {freshTraceHighlights.map(({ label, icon: Icon }) => (
+              <div key={label} className="rounded-xl border border-accent-300/15 bg-accent-400/[0.06] p-3 transition duration-200 hover:border-accent-300/35 hover:bg-accent-400/10">
+                <Icon size={17} className="text-accent-300" />
+                <p className="mt-2 text-sm font-semibold leading-5 text-white">{label}</p>
               </div>
             ))}
           </div>
@@ -77,9 +89,26 @@ export function ProjectCard({ project, variant = 'compact' }: ProjectCardProps) 
         </div>
 
         {isFeatured ? (
-          <div className="mt-6 grid gap-2 sm:grid-cols-2">
+          <div className="mt-6 rounded-xl border border-white/10 bg-white/[0.035] p-3">
+            <div className="flex flex-wrap items-center gap-2">
+              {architectureSteps.map((step, index) => (
+                <span key={step} className="contents">
+                  <span className="rounded-full border border-white/10 bg-white/[0.045] px-3 py-1 text-xs font-semibold text-slate-300">
+                    {step}
+                  </span>
+                  {index < architectureSteps.length - 1 ? (
+                    <span className="text-xs text-accent-300">-&gt;</span>
+                  ) : null}
+                </span>
+              ))}
+            </div>
+          </div>
+        ) : null}
+
+        {isFeatured ? (
+          <div className="mt-4 grid gap-2 sm:grid-cols-2">
             {project.features.slice(0, 4).map((feature) => (
-              <span key={feature} className="rounded-lg border border-white/10 bg-white/[0.035] px-3 py-2 text-sm text-slate-300">
+              <span key={feature} className="rounded-lg border border-white/10 bg-white/[0.035] px-3 py-2 text-sm text-slate-300 transition duration-200 hover:border-accent-300/25 hover:bg-white/[0.055]">
                 {feature}
               </span>
             ))}
@@ -92,7 +121,7 @@ export function ProjectCard({ project, variant = 'compact' }: ProjectCardProps) 
       </div>
 
       {isFeatured || variant === 'listing' ? (
-        <div className={cn(isFeatured ? 'mt-8 lg:mt-0' : 'mt-6')}>
+        <div className={cn('relative', isFeatured ? 'mt-8 lg:mt-0' : 'mt-6')}>
           <ProjectVisual project={project} large={isFeatured} />
         </div>
       ) : null}
