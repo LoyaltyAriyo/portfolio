@@ -38,11 +38,10 @@ function ProfileCard() {
   return (
     <motion.article
       variants={slideLeft}
-      className="surface-card flex h-full flex-col justify-center overflow-hidden p-6 sm:p-7"
+      className="surface-card flex min-h-[26rem] h-full items-stretch justify-center overflow-hidden p-0 lg:min-h-0"
     >
-      <div className="relative mx-auto grid size-40 place-items-center rounded-[2rem] border border-accent-300/25 bg-accent-400/10 p-2 shadow-glow sm:size-44">
-        <div className="absolute inset-3 rounded-[1.5rem] bg-[radial-gradient(circle_at_50%_18%,rgba(125,211,252,0.28),transparent_62%)]" />
-        <div className="relative grid size-full place-items-center overflow-hidden rounded-[1.5rem] border border-white/10 bg-ink-800">
+      <div className="relative grid h-full w-full place-items-center rounded-[1.5rem] shadow-glow">
+        <div className="relative grid h-full w-full place-items-center overflow-hidden rounded-[1.5rem] bg-ink-800">
           {profileImage ? (
             <img
               src={profileImage}
@@ -55,22 +54,6 @@ function ProfileCard() {
             </div>
           )}
         </div>
-      </div>
-
-      <div className="mt-6 text-center">
-        <h3 className="text-2xl font-semibold tracking-normal text-white">Amir Mohammadi</h3>
-        <p className="mt-2 text-base font-medium text-accent-200">Software Developer</p>
-        <p className="mt-2 inline-flex items-center gap-2 text-sm text-slate-400">
-          <MapPin size={15} />
-          Vancouver, BC
-        </p>
-      </div>
-
-      <div className="mt-6 flex justify-center">
-        <span className="inline-flex items-center gap-2 rounded-full border border-accent-300/20 bg-accent-400/10 px-3 py-1.5 text-sm font-medium text-accent-200">
-          <span className="size-2 rounded-full bg-accent-300" />
-          Open to Junior Developer Roles
-        </span>
       </div>
     </motion.article>
   )
@@ -96,7 +79,7 @@ function QuickFactsCard() {
         whileInView="visible"
         viewport={{ once: true, margin: '-100px' }}
         transition={{ staggerChildren: 0.05 }}
-        className="mt-5 grid gap-3 sm:grid-cols-2"
+        className="mt-5 grid auto-rows-fr gap-3 sm:grid-cols-2"
       >
         {quickFacts.map((fact, index) => {
           const Icon = factIcons[index] ?? BadgeCheck
@@ -105,7 +88,7 @@ function QuickFactsCard() {
             <motion.div
               key={fact.label}
               variants={fadeUp}
-              className="grid grid-cols-[2.25rem_1fr] gap-3 rounded-xl border border-white/10 bg-white/[0.035] p-3.5"
+              className="grid min-h-28 grid-cols-[2.25rem_1fr] gap-3 rounded-xl border border-white/10 bg-white/[0.035] p-3.5"
             >
               <span className="grid size-9 place-items-center rounded-lg border border-white/10 bg-white/[0.045] text-accent-300">
                 <Icon size={17} />
