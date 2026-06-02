@@ -1,11 +1,11 @@
-import { Award, BriefcaseBusiness, Mail, Sparkles, UserRound } from 'lucide-react'
+import { Mail, Rocket, Sparkles, UserRound } from 'lucide-react'
 import type { NavItem, SectionItem } from '../types/navigation'
 
 export const navItems: NavItem[] = [
   { label: 'About', href: '#about', kind: 'anchor' },
   { label: 'Projects', href: '#projects', kind: 'anchor' },
   { label: 'Skills', href: '#skills', kind: 'anchor' },
-  { label: 'Experience', href: '#experience', kind: 'anchor' },
+  { label: 'Journey', href: '#journey', kind: 'anchor' },
   { label: 'Contact', href: '#contact', kind: 'anchor' },
 ]
 
@@ -27,20 +27,12 @@ export const sectionItems: SectionItem[] = [
     icon: Sparkles,
   },
   {
-    id: 'experience',
-    eyebrow: 'Experience',
-    title: 'Education and relevant experience will be structured here.',
+    id: 'journey',
+    eyebrow: 'Journey',
+    title: 'A unified technical progress story belongs here.',
     description:
-      'This section will stay direct and scannable for junior software developer and full-stack applications.',
-    icon: BriefcaseBusiness,
-  },
-  {
-    id: 'awards',
-    eyebrow: 'Awards',
-    title: 'Awards and recognition can be added without clutter.',
-    description:
-      'This placeholder reserves space for academic awards, certifications, and notable achievements.',
-    icon: Award,
+      'This placeholder is replaced on the home page by the scroll-activated journey timeline.',
+    icon: Rocket,
   },
   {
     id: 'contact',

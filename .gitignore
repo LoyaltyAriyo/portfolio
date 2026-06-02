@@ -15,6 +15,14 @@ dist-ssr
 !.env.example
 *.local
 
+# Raw/source video exports should be optimized before adding to the app.
+src/assets/background-video/raw/
+src/assets/background-video/original*
+src/assets/background-video/source*
+src/assets/background-video/*.mov
+src/assets/background-video/*.avi
+src/assets/background-video/*.mkv
+
 # Editor directories and files
 .vscode/*
 !.vscode/extensions.json

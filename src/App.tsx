@@ -5,7 +5,8 @@ import { ScrollToTop } from './components/layout/ScrollToTop'
 import { HomePage } from './pages/HomePage'
 import { NotFoundPage } from './pages/NotFoundPage'
 import { ProjectDetailPage } from './pages/ProjectDetailPage'
-import backgroundVideo from './assets/background-video/abstract1.mp4'
+import backgroundMp4 from './assets/background-video/abstract1.mp4'
+import backgroundWebm from './assets/background-video/abstract1.webm'
 
 function App() {
   return (
@@ -20,7 +21,8 @@ function App() {
           preload="metadata"
           className="size-full object-cover opacity-80"
         >
-          <source src={backgroundVideo} type="video/mp4" />
+          <source src={backgroundWebm} type="video/webm" />
+          <source src={backgroundMp4} type="video/mp4" />
         </video>
       </div>
       <div className="fixed inset-0 -z-10 bg-ink-950/58 backdrop-blur-[1px]" />
