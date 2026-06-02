@@ -8,3 +8,9 @@ export const quickFacts = [
 ]
 
 export const resumePath = '/resume/Amir_Mohammadi_Software_Resume.pdf'
+
+export const contactDetails = {
+  email: 'amirhossein1384m@gmail.com',
+  linkedinUrl: 'https://www.linkedin.com/in/amirhossein1384m/',
+  githubUrl: 'https://github.com/LoyaltyAriyo',
+} as const

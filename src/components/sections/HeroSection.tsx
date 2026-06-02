@@ -10,7 +10,7 @@ const fadeUp = {
 export function HeroSection() {
   return (
     <section id="home" className="relative overflow-hidden pt-32 sm:pt-36">
-      <div className="absolute inset-x-0 top-0 -z-10 h-[34rem] bg-[radial-gradient(circle_at_50%_0%,rgba(56,189,248,0.18),transparent_58%)]" />
+      <div className="absolute inset-x-0 top-0 -z-10 h-[34rem] bg-[radial-gradient(circle_at_50%_0%,rgba(56,189,248,0.09),transparent_58%)]" />
       <Container className="pb-20 pt-8 sm:pb-28">
         <motion.div
           initial="hidden"
