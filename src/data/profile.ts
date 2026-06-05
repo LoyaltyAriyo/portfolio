@@ -3,7 +3,7 @@ export const quickFacts = [
   { label: 'Education', value: 'Software Engineering Technician Diploma' },
   { label: 'Main Stack', value: 'React, TypeScript, Node.js' },
   { label: 'Focus', value: 'Full-Stack Web Development' },
-  { label: 'Looking For', value: 'Junior Developer / React / Full-Stack Roles' },
+  { label: 'Looking For', value: 'Junior Developer / React / Full-Stack' },
   { label: 'Work Authorization', value: 'Eligible to work in Canada' },
 ]
 

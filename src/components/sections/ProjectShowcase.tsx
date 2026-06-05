@@ -167,7 +167,7 @@ function FreshTraceProductShowcase({ project }: { project: Project }) {
   return (
     <div className="relative">
       <div
-        className="mb-4 flex w-full gap-1 overflow-x-auto rounded-xl border border-white/10 bg-ink-950/58 p-1 backdrop-blur"
+        className="mb-3 grid w-full grid-cols-4 gap-0.5 rounded-full border border-white/10 bg-ink-950/58 p-1 backdrop-blur"
         role="tablist"
         aria-label="FreshTrace product screens"
       >
@@ -179,7 +179,7 @@ function FreshTraceProductShowcase({ project }: { project: Project }) {
               key={tab.label}
               type="button"
               onClick={() => setActiveTab(tab.label)}
-              className={`relative h-10 shrink-0 rounded-lg px-4 text-sm font-semibold transition ${
+              className={`relative h-8 min-w-0 rounded-full px-1 text-[11px] font-medium transition sm:text-xs ${
                 isActive
                   ? 'text-ink-950'
                   : 'text-slate-400 hover:bg-white/[0.04] hover:text-white'
@@ -191,7 +191,7 @@ function FreshTraceProductShowcase({ project }: { project: Project }) {
               {isActive ? (
                 <motion.span
                   layoutId="freshtrace-active-tab"
-                  className="absolute inset-0 rounded-lg bg-white"
+                  className="absolute inset-0 rounded-full bg-white"
                   transition={{ duration: 0.25, ease: 'easeOut' }}
                 />
               ) : null}
@@ -231,11 +231,11 @@ function FreshTraceProductShowcase({ project }: { project: Project }) {
 
         <div
           id="freshtrace-showcase-panel"
-          className="relative aspect-[16/10] overflow-hidden rounded-[1.25rem] border border-white/10 bg-ink-900"
+          className="relative aspect-[16/10] overflow-hidden rounded-[1.25rem] border border-white/10 bg-ink-900 lg:aspect-[4/3]"
           role="tabpanel"
           aria-label={`${project.title} ${activeTab} screenshot`}
         >
-          <AnimatePresence mode="wait">
+          <AnimatePresence>
             <motion.img
               key={activeScreenshot.label}
               src={activeScreenshot.src}
@@ -243,7 +243,7 @@ function FreshTraceProductShowcase({ project }: { project: Project }) {
               initial={{ opacity: 0, scale: reduceMotion ? 1 : 1.02 }}
               animate={{ opacity: 1, scale: 1 }}
               exit={{ opacity: 0, scale: reduceMotion ? 1 : 0.98 }}
-              transition={{ duration: 0.4, ease: 'easeOut' }}
+              transition={{ duration: 0.2, ease: 'easeOut' }}
               className="absolute inset-0 size-full object-cover object-top"
             />
           </AnimatePresence>

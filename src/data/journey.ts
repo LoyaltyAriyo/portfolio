@@ -54,9 +54,9 @@ export const journeyMilestones: JourneyMilestone[] = [
     tags: ['React', 'NASA APIs', 'Leaflet', 'Data Visualization'],
     cta: asteroidZeroProject
       ? {
-          label: 'View Project',
-          href: `/projects/${asteroidZeroProject.slug}`,
-        }
+        label: 'View Project',
+        href: `/projects/${asteroidZeroProject.slug}`,
+      }
       : undefined,
     icon: Trophy,
   },
@@ -71,9 +71,9 @@ export const journeyMilestones: JourneyMilestone[] = [
     tags: ['React', 'TypeScript', 'PostgreSQL', 'Supabase', 'OCR', 'AI'],
     cta: freshTraceProject
       ? {
-          label: 'View Project',
-          href: `/projects/${freshTraceProject.slug}`,
-        }
+        label: 'View Project',
+        href: `/projects/${freshTraceProject.slug}`,
+      }
       : undefined,
     icon: Rocket,
     featured: true,
@@ -83,10 +83,10 @@ export const journeyMilestones: JourneyMilestone[] = [
     type: 'AI Experience',
     year: '2026',
     title: 'Alignerr',
-    subtitle: 'AI Data Trainer / AI Contributor',
+    subtitle: 'Software Engineer / AI Training & Data Quality',
     description:
-      'Contributed to AI evaluation and data-quality tasks, including structured annotation, transcription review, and human feedback workflows used to improve AI model performance.',
-    tags: ['AI Evaluation', 'Annotation', 'Transcription', 'Data Quality'],
+      'Contributed to AI evaluation and data-quality initiatives by reviewing structured technical outputs, validating YAML-based configurations, identifying edge cases, and improving the accuracy and reliability of AI-generated content through human feedback workflows.',
+    tags: ['YAML', 'JSON', 'Git', 'AI Evaluation', 'Data Quality'],
     icon: BrainCircuit,
   },
   {
