@@ -4,6 +4,7 @@ import {
   Download,
   Eye,
   FileText,
+  Globe2,
   GraduationCap,
   Layers3,
   MapPin,
@@ -120,7 +121,7 @@ function QuickFactsCard() {
       <div className="relative flex flex-col gap-2 pb-1 sm:flex-row sm:items-end sm:justify-between">
         <div>
           <p className="text-xs font-medium uppercase tracking-[0.16em] text-accent-300/75">
-            Recruiter Snapshot
+            PROFILE OVERVIEW
           </p>
           <h3 className="mt-2.5 flex items-center gap-2.5 text-xl font-semibold tracking-normal text-white">
             <UserRound size={20} className="text-accent-300/90" />
@@ -181,8 +182,8 @@ function QuickFactsCard() {
       </motion.div>
 
       <div className="relative mt-4 flex items-center gap-2 rounded-xl border border-white/[0.06] bg-white/[0.025] px-3.5 py-2.5 text-xs font-medium leading-5 text-slate-300 sm:text-sm">
-        <Sparkles size={15} className="shrink-0 text-accent-300/80" />
-        Open to junior developer, React, and full-stack opportunities.
+        <Globe2 size={15} className="shrink-0 text-accent-300/80" />
+        Helping businesses, creators, and startups build modern web experiences.
       </div>
     </motion.article>
   )
@@ -309,7 +310,7 @@ export function ProfessionalProfile() {
             <SectionHeader
               eyebrow="About"
               title="Professional Profile"
-              description="A recruiter-friendly snapshot of Amir's background, focus areas, and current software development goals."
+              description="A quick overview of my background, technical strengths, and the work I'm building today."
             />
           </motion.div>
 
