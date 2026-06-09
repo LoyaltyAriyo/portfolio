@@ -13,12 +13,20 @@ import {
 } from 'lucide-react'
 import { motion, useReducedMotion } from 'framer-motion'
 import { quickFacts, resumePath } from '../../data/profile'
-import { fadeUp, motionEase, revealViewport, staggerContainer } from '../../lib/motion'
+import {
+  fadeUp,
+  motionEase,
+  revealTransition,
+  revealViewport,
+} from '../../lib/motion'
 import { cn } from '../../lib/utils'
 import { Container } from '../ui/Container'
 import { SectionHeader } from '../ui/SectionHeader'
 
-const profileImage = new URL('../../assets/professional-profile/Portrait.JPG', import.meta.url).href
+const profileImage = new URL(
+  '../../assets/professional-profile/Portrait-premium.webp',
+  import.meta.url,
+).href
 
 const factIcons = [MapPin, GraduationCap, Layers3, BriefcaseBusiness, Sparkles, BadgeCheck]
 
@@ -30,8 +38,16 @@ const profileGlassCardBase = [
 const profileGlassCard = [
   ...profileGlassCardBase,
   'group',
-  'transition duration-300 hover:border-white/15 hover:shadow-[0_28px_76px_rgba(0,0,0,0.24)]',
+  'transition-[border-color,box-shadow] duration-300 hover:border-white/15 hover:shadow-[0_28px_76px_rgba(0,0,0,0.24)]',
 ]
+
+const stablePreview = {
+  hidden: { y: -18 },
+  visible: {
+    y: 0,
+    transition: revealTransition,
+  },
+}
 
 function GlassCardEffects() {
   return <div className="pointer-events-none absolute inset-x-6 top-0 h-px bg-gradient-to-r from-transparent via-white/20 to-transparent" />
@@ -41,33 +57,43 @@ function ProfileCard() {
   const reduceMotion = useReducedMotion()
 
   return (
-    <motion.article
+    <motion.div
+      initial="hidden"
+      whileInView="visible"
+      viewport={revealViewport}
       variants={fadeUp}
-      whileHover={
-        reduceMotion ? undefined : { y: -3, transition: { duration: 0.2, ease: motionEase } }
-      }
-      className={cn(
-        profileGlassCard,
-        'flex h-full min-h-[26rem] items-stretch justify-center p-1.5 lg:min-h-0',
-      )}
+      className="h-full"
     >
-      <GlassCardEffects />
-      <div className="relative grid h-full w-full place-items-center overflow-hidden rounded-[0.7rem] border border-white/10 bg-ink-800">
-        <div className="relative grid h-full w-full place-items-center overflow-hidden rounded-[0.65rem] bg-ink-800">
-          {profileImage ? (
+      <motion.article
+        whileHover={
+          reduceMotion ? undefined : { y: -3, transition: { duration: 0.2, ease: motionEase } }
+        }
+        className={cn(
+          profileGlassCard,
+          'flex h-full min-h-[26rem] items-stretch justify-center p-1.5 lg:min-h-0',
+        )}
+      >
+        <GlassCardEffects />
+        <div className="relative grid h-full w-full place-items-center overflow-hidden rounded-[0.7rem] border border-white/10 bg-ink-800">
+          <div className="relative grid h-full w-full place-items-center overflow-hidden rounded-[0.65rem] bg-ink-800">
             <img
               src={profileImage}
               alt="Amir Mohammadi"
-              className="size-full object-cover transition-transform duration-500 ease-out group-hover:scale-[1.015]"
+              width={1200}
+              height={1600}
+              loading="lazy"
+              decoding="async"
+              sizes="(min-width: 1024px) 38vw, (min-width: 640px) calc(100vw - 3rem), calc(100vw - 2.5rem)"
+              className={cn(
+                'size-full object-cover',
+                !reduceMotion &&
+                  'transition-transform duration-500 ease-out group-hover:scale-[1.015]',
+              )}
             />
-          ) : (
-            <div className="grid size-full place-items-center bg-[linear-gradient(135deg,rgba(56,189,248,0.22),rgba(15,23,42,0.88)_45%,rgba(148,163,184,0.16))]">
-              <span className="text-5xl font-semibold tracking-normal text-white">AM</span>
-            </div>
-          )}
+          </div>
         </div>
-      </div>
-    </motion.article>
+      </motion.article>
+    </motion.div>
   )
 }
 
@@ -75,7 +101,13 @@ function QuickFactsCard() {
   const reduceMotion = useReducedMotion()
 
   return (
-    <motion.div variants={fadeUp} className="h-full">
+    <motion.div
+      initial="hidden"
+      whileInView="visible"
+      viewport={revealViewport}
+      variants={fadeUp}
+      className="h-full"
+    >
       <motion.article
         whileHover={
           reduceMotion ? undefined : { y: -3, transition: { duration: 0.2, ease: motionEase } }
@@ -145,29 +177,31 @@ function QuickFactsCard() {
 
 function ResumePreview() {
   return (
-    <div className="relative hidden min-h-[25rem] -translate-y-1 overflow-hidden rounded-2xl border border-white/15 bg-white shadow-[0_24px_54px_rgba(0,0,0,0.28),0_5px_16px_rgba(0,0,0,0.18)] md:block">
-      <span className="absolute left-4 top-4 z-10 rounded-full border border-ink-950/10 bg-white/90 px-3 py-1 text-xs font-semibold text-ink-950 shadow-sm">
-        Latest Resume
-      </span>
-      <object
-        data={`${resumePath}#toolbar=0&navpanes=0&scrollbar=0&view=FitH&zoom=78`}
-        type="application/pdf"
-        aria-label="Resume preview"
-        className="relative h-full min-h-[25rem] w-full"
-      >
-        <div className="grid h-full min-h-[25rem] place-items-center bg-ink-900 p-6 text-center">
-          <a
-            href={resumePath}
-            target="_blank"
-            rel="noreferrer"
-            className="inline-flex h-11 items-center justify-center gap-2 rounded-lg bg-white px-5 text-sm font-semibold text-ink-950 transition hover:bg-slate-200"
-          >
-            <Eye size={16} />
-            View Resume
-          </a>
-        </div>
-      </object>
-    </div>
+    <motion.div variants={stablePreview} className="hidden md:block">
+      <div className="relative min-h-[25rem] -translate-y-1 overflow-hidden rounded-2xl border border-white/15 bg-white shadow-[0_24px_54px_rgba(0,0,0,0.28),0_5px_16px_rgba(0,0,0,0.18)]">
+        <span className="absolute left-4 top-4 z-10 rounded-full border border-ink-950/10 bg-white/90 px-3 py-1 text-xs font-semibold text-ink-950 shadow-sm">
+          Latest Resume
+        </span>
+        <object
+          data={`${resumePath}#toolbar=0&navpanes=0&scrollbar=0&view=FitH&zoom=78`}
+          type="application/pdf"
+          aria-label="Resume preview"
+          className="relative h-full min-h-[25rem] w-full"
+        >
+          <div className="grid h-full min-h-[25rem] place-items-center bg-ink-900 p-6 text-center">
+            <a
+              href={resumePath}
+              target="_blank"
+              rel="noreferrer"
+              className="inline-flex h-11 items-center justify-center gap-2 rounded-lg bg-white px-5 text-sm font-semibold text-ink-950 transition-colors hover:bg-slate-200"
+            >
+              <Eye size={16} />
+              View Resume
+            </a>
+          </div>
+        </object>
+      </div>
+    </motion.div>
   )
 }
 
@@ -199,51 +233,58 @@ function ResumeCard() {
   const reduceMotion = useReducedMotion()
 
   return (
-    <motion.article
+    <motion.div
+      initial="hidden"
+      whileInView="visible"
+      viewport={revealViewport}
       variants={fadeUp}
-      whileHover={
-        reduceMotion ? undefined : { y: -3, transition: { duration: 0.2, ease: motionEase } }
-      }
-      className={cn(
-        profileGlassCard,
-        'grid gap-6 p-5 sm:p-6 lg:col-span-2 lg:grid-cols-[minmax(0,0.9fr)_minmax(18rem,0.95fr)] lg:items-center',
-      )}
+      className="lg:col-span-2"
     >
-      <GlassCardEffects />
+      <motion.article
+        whileHover={
+          reduceMotion ? undefined : { y: -3, transition: { duration: 0.2, ease: motionEase } }
+        }
+        className={cn(
+          profileGlassCard,
+          'grid gap-6 p-5 sm:p-6 lg:grid-cols-[minmax(0,0.9fr)_minmax(18rem,0.95fr)] lg:items-center',
+        )}
+      >
+        <GlassCardEffects />
 
-      <div className="relative">
-        <div className="grid size-12 place-items-center rounded-xl border border-white/[0.08] bg-white/[0.04] text-accent-300/90 shadow-[inset_0_1px_0_rgba(255,255,255,0.07)]">
-          <FileText size={22} />
+        <div className="relative">
+          <div className="grid size-12 place-items-center rounded-xl border border-white/[0.08] bg-white/[0.04] text-accent-300/90 shadow-[inset_0_1px_0_rgba(255,255,255,0.07)]">
+            <FileText size={22} />
+          </div>
+          <h3 className="mt-5 text-2xl font-semibold tracking-normal text-white">Resume</h3>
+          <p className="mt-3 max-w-md text-base leading-7 text-slate-400/90">
+            View or download my latest software developer resume.
+          </p>
+
+          <div className="mt-6 flex flex-col gap-3 sm:flex-row">
+            <a
+              href={resumePath}
+              target="_blank"
+              rel="noreferrer"
+              className="inline-flex h-11 items-center justify-center gap-2 rounded-lg bg-white px-5 text-sm font-semibold text-ink-950 transition-colors duration-200 hover:bg-slate-200"
+            >
+              <Eye size={16} />
+              View Resume
+            </a>
+            <a
+              href={resumePath}
+              download
+              className="inline-flex h-11 items-center justify-center gap-2 rounded-lg border border-white/[0.09] bg-white/[0.045] px-5 text-sm font-semibold text-white transition-[background-color,border-color] duration-200 hover:border-accent-400/35 hover:bg-accent-400/[0.08]"
+            >
+              <Download size={16} />
+              Download PDF
+            </a>
+          </div>
         </div>
-        <h3 className="mt-5 text-2xl font-semibold tracking-normal text-white">Resume</h3>
-        <p className="mt-3 max-w-md text-base leading-7 text-slate-400/90">
-          View or download my latest software developer resume.
-        </p>
 
-        <div className="mt-6 flex flex-col gap-3 sm:flex-row">
-          <a
-            href={resumePath}
-            target="_blank"
-            rel="noreferrer"
-            className="inline-flex h-11 items-center justify-center gap-2 rounded-lg bg-white px-5 text-sm font-semibold text-ink-950 transition duration-200 hover:bg-slate-200"
-          >
-            <Eye size={16} />
-            View Resume
-          </a>
-          <a
-            href={resumePath}
-            download
-            className="inline-flex h-11 items-center justify-center gap-2 rounded-lg border border-white/[0.09] bg-white/[0.045] px-5 text-sm font-semibold text-white transition duration-200 hover:border-accent-400/35 hover:bg-accent-400/[0.08]"
-          >
-            <Download size={16} />
-            Download PDF
-          </a>
-        </div>
-      </div>
-
-      <MobileResumeMockup />
-      <ResumePreview />
-    </motion.article>
+        <MobileResumeMockup />
+        <ResumePreview />
+      </motion.article>
+    </motion.div>
   )
 }
 
@@ -264,17 +305,11 @@ export function ProfessionalProfile() {
           />
         </motion.div>
 
-        <motion.div
-          initial="hidden"
-          whileInView="visible"
-          viewport={revealViewport}
-          variants={staggerContainer}
-          className="mt-8 grid gap-5 lg:grid-cols-[minmax(18rem,0.8fr)_minmax(0,1.2fr)] lg:items-stretch"
-        >
+        <div className="mt-8 grid gap-5 lg:grid-cols-[minmax(18rem,0.8fr)_minmax(0,1.2fr)] lg:items-stretch">
           <ProfileCard />
           <QuickFactsCard />
           <ResumeCard />
-        </motion.div>
+        </div>
       </Container>
     </section>
   )
