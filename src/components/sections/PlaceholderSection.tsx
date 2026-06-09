@@ -1,4 +1,5 @@
 import { motion } from 'framer-motion'
+import { fadeUp, revealViewport } from '../../lib/motion'
 import type { SectionItem } from '../../types/navigation'
 import { Container } from '../ui/Container'
 import { SectionHeader } from '../ui/SectionHeader'
@@ -11,13 +12,13 @@ export function PlaceholderSection({ section }: PlaceholderSectionProps) {
   const Icon = section.icon
 
   return (
-    <section id={section.id} className="section-spacing scroll-mt-24">
+    <section id={section.id} className="section-spacing scroll-mt-16">
       <Container>
         <motion.div
-          initial={{ opacity: 0, y: 22 }}
-          whileInView={{ opacity: 1, y: 0 }}
-          viewport={{ once: true, margin: '-120px' }}
-          transition={{ duration: 0.45, ease: 'easeOut' }}
+          initial="hidden"
+          whileInView="visible"
+          viewport={revealViewport}
+          variants={fadeUp}
           className="surface-card grid gap-8 p-6 sm:p-8 lg:grid-cols-[1fr_16rem] lg:items-center lg:p-10"
         >
           <SectionHeader

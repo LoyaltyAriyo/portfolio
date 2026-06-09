@@ -13,56 +13,28 @@ import {
 } from 'lucide-react'
 import { motion, useReducedMotion } from 'framer-motion'
 import { quickFacts, resumePath } from '../../data/profile'
+import { fadeUp, motionEase, revealViewport, staggerContainer } from '../../lib/motion'
 import { cn } from '../../lib/utils'
 import { Container } from '../ui/Container'
 import { SectionHeader } from '../ui/SectionHeader'
 
 const profileImage = new URL('../../assets/professional-profile/Portrait.JPG', import.meta.url).href
 
-const fadeUp = {
-  hidden: { opacity: 0, y: 18 },
-  visible: { opacity: 1, y: 0 },
-}
-
 const factIcons = [MapPin, GraduationCap, Layers3, BriefcaseBusiness, Sparkles, BadgeCheck]
 
-const profileGlassCard = [
-  'group relative overflow-hidden rounded-2xl border border-white/10',
+const profileGlassCardBase = [
+  'relative overflow-hidden rounded-2xl border border-white/10',
   'bg-[linear-gradient(180deg,rgba(255,255,255,0.07),rgba(255,255,255,0.032))] shadow-[0_24px_70px_rgba(0,0,0,0.20)] backdrop-blur-xl',
+]
+
+const profileGlassCard = [
+  ...profileGlassCardBase,
+  'group',
   'transition duration-300 hover:border-white/15 hover:shadow-[0_28px_76px_rgba(0,0,0,0.24)]',
 ]
 
-const cardEntrance = {
-  hidden: { opacity: 0, y: 10 },
-  visible: (delay = 0) => ({
-    opacity: 1,
-    y: 0,
-    transition: { duration: 0.36, delay, ease: 'easeOut' as const },
-  }),
-}
-
 function GlassCardEffects() {
   return <div className="pointer-events-none absolute inset-x-6 top-0 h-px bg-gradient-to-r from-transparent via-white/20 to-transparent" />
-}
-
-const factGrid = {
-  hidden: {},
-  visible: {
-    transition: {
-      staggerChildren: 0.08,
-      delayChildren: 0.08,
-    },
-  },
-}
-
-const factTile = {
-  hidden: { opacity: 0, y: 16, scale: 0.98 },
-  visible: {
-    opacity: 1,
-    y: 0,
-    scale: 1,
-    transition: { duration: 0.38, ease: 'easeOut' as const },
-  },
 }
 
 function ProfileCard() {
@@ -70,13 +42,10 @@ function ProfileCard() {
 
   return (
     <motion.article
-      variants={cardEntrance}
-      custom={0}
-      initial={reduceMotion ? false : 'hidden'}
-      whileInView="visible"
-      viewport={{ once: true, margin: '-70px' }}
-      whileHover={reduceMotion ? undefined : { y: -3 }}
-      transition={{ duration: 0.25, ease: 'easeOut' }}
+      variants={fadeUp}
+      whileHover={
+        reduceMotion ? undefined : { y: -3, transition: { duration: 0.2, ease: motionEase } }
+      }
       className={cn(
         profileGlassCard,
         'flex h-full min-h-[26rem] items-stretch justify-center p-1.5 lg:min-h-0',
@@ -106,86 +75,71 @@ function QuickFactsCard() {
   const reduceMotion = useReducedMotion()
 
   return (
-    <motion.article
-      variants={cardEntrance}
-      custom={0.06}
-      initial={reduceMotion ? false : 'hidden'}
-      whileInView="visible"
-      viewport={{ once: true, margin: '-70px' }}
-      whileHover={reduceMotion ? undefined : { y: -3 }}
-      transition={{ duration: 0.25, ease: 'easeOut' }}
-      className={cn(profileGlassCard, 'flex h-full flex-col p-5 sm:p-6')}
-    >
-      <GlassCardEffects />
-
-      <div className="relative flex flex-col gap-2 pb-1 sm:flex-row sm:items-end sm:justify-between">
-        <div>
-          <p className="text-xs font-medium uppercase tracking-[0.16em] text-accent-300/75">
-            PROFILE OVERVIEW
-          </p>
-          <h3 className="mt-2.5 flex items-center gap-2.5 text-xl font-semibold tracking-normal text-white">
-            <UserRound size={20} className="text-accent-300/90" />
-            Quick Facts
-          </h3>
-        </div>
-      </div>
-
-      <motion.div
-        variants={factGrid}
-        initial="hidden"
-        whileInView="visible"
-        viewport={{ once: true, margin: '-80px' }}
-        className="relative mt-5 grid flex-1 auto-rows-fr gap-3 md:grid-cols-2"
+    <motion.div variants={fadeUp} className="h-full">
+      <motion.article
+        whileHover={
+          reduceMotion ? undefined : { y: -3, transition: { duration: 0.2, ease: motionEase } }
+        }
+        className={cn(profileGlassCardBase, 'flex h-full flex-col p-5 sm:p-6')}
       >
-        {quickFacts.map((fact, index) => {
-          const Icon = factIcons[index] ?? BadgeCheck
-          const isRecruiterPriority = fact.label === 'Looking For'
+        <GlassCardEffects />
 
-          return (
-            <motion.div
-              key={fact.label}
-              variants={factTile}
-              whileHover={reduceMotion ? undefined : { y: -3 }}
-              transition={{ duration: 0.2, ease: 'easeOut' }}
-              className={`group relative grid min-h-24 grid-cols-[2.25rem_1fr] gap-3 overflow-hidden rounded-xl border bg-[linear-gradient(180deg,rgba(255,255,255,0.035),rgba(255,255,255,0.02))] p-3.5 shadow-[0_14px_34px_rgba(0,0,0,0.16),inset_0_1px_0_rgba(255,255,255,0.05)] backdrop-blur-lg transition-[border-color,background-color,box-shadow] duration-300 ${
-                isRecruiterPriority
-                  ? 'border-accent-400/15 hover:border-accent-300/30 hover:bg-white/[0.045]'
-                  : 'border-white/[0.08] hover:border-white/[0.15] hover:bg-white/[0.045]'
-              }`}
-            >
+        <div className="relative flex flex-col gap-2 pb-1 sm:flex-row sm:items-end sm:justify-between">
+          <div>
+            <p className="text-xs font-medium uppercase tracking-[0.16em] text-accent-300/75">
+              PROFILE OVERVIEW
+            </p>
+            <h3 className="mt-2.5 flex items-center gap-2.5 text-xl font-semibold tracking-normal text-white">
+              <UserRound size={20} className="text-accent-300/90" />
+              Quick Facts
+            </h3>
+          </div>
+        </div>
+
+        <div className="relative mt-5 grid flex-1 auto-rows-fr gap-3 md:grid-cols-2">
+          {quickFacts.map((fact, index) => {
+            const Icon = factIcons[index] ?? BadgeCheck
+            const isRecruiterPriority = fact.label === 'Looking For'
+
+            return (
               <div
-                aria-hidden="true"
-                className="pointer-events-none absolute inset-x-3 top-0 h-px bg-gradient-to-r from-transparent via-white/12 to-transparent"
-              />
-              <motion.span
-                className="relative grid size-9 place-items-center rounded-lg border border-white/[0.09] bg-white/[0.045] text-accent-300/90 shadow-[inset_0_1px_0_rgba(255,255,255,0.06)] transition duration-300 group-hover:border-accent-300/25 group-hover:bg-accent-400/[0.065] group-hover:text-accent-200 group-hover:shadow-[0_0_12px_rgba(56,189,248,0.12)]"
-                whileHover={reduceMotion ? undefined : { scale: [1, 1.08, 1.03] }}
-                transition={{ duration: 0.35 }}
+                key={fact.label}
+                className={`relative grid min-h-24 grid-cols-[2.25rem_1fr] gap-3 overflow-hidden rounded-xl border bg-[linear-gradient(180deg,rgba(255,255,255,0.035),rgba(255,255,255,0.02))] p-3.5 shadow-[0_14px_34px_rgba(0,0,0,0.16),inset_0_1px_0_rgba(255,255,255,0.05)] backdrop-blur-lg ${
+                  isRecruiterPriority
+                    ? 'border-accent-400/15'
+                    : 'border-white/[0.08]'
+                }`}
               >
-                <Icon size={17} />
-              </motion.span>
-              <span className="relative min-w-0">
-                <span
-                  className={`block text-xs font-medium uppercase tracking-[0.14em] ${
-                    isRecruiterPriority ? 'text-accent-300/70' : 'text-slate-500/80'
-                  }`}
-                >
-                  {fact.label}
+                <div
+                  aria-hidden="true"
+                  className="pointer-events-none absolute inset-x-3 top-0 h-px bg-gradient-to-r from-transparent via-white/12 to-transparent"
+                />
+                <span className="relative grid size-9 place-items-center rounded-lg border border-white/[0.09] bg-white/[0.045] text-accent-300/90 shadow-[inset_0_1px_0_rgba(255,255,255,0.06)]">
+                  <Icon size={17} />
                 </span>
-                <span className="mt-1.5 block text-sm font-medium leading-5 text-slate-100">
-                  {fact.value}
+                <span className="relative min-w-0">
+                  <span
+                    className={`block text-xs font-medium uppercase tracking-[0.14em] ${
+                      isRecruiterPriority ? 'text-accent-300/70' : 'text-slate-500/80'
+                    }`}
+                  >
+                    {fact.label}
+                  </span>
+                  <span className="mt-1.5 block text-sm font-medium leading-5 text-slate-100">
+                    {fact.value}
+                  </span>
                 </span>
-              </span>
-            </motion.div>
-          )
-        })}
-      </motion.div>
+              </div>
+            )
+          })}
+        </div>
 
-      <div className="relative mt-4 flex items-center gap-2 rounded-xl border border-white/[0.06] bg-white/[0.025] px-3.5 py-2.5 text-xs font-medium leading-5 text-slate-300 sm:text-sm">
-        <Globe2 size={15} className="shrink-0 text-accent-300/80" />
-        Helping businesses, creators, and startups build modern web experiences.
-      </div>
-    </motion.article>
+        <div className="relative mt-4 flex items-center gap-2 rounded-xl border border-white/[0.06] bg-white/[0.025] px-3.5 py-2.5 text-xs font-medium leading-5 text-slate-300 sm:text-sm">
+          <Globe2 size={15} className="shrink-0 text-accent-300/80" />
+          Helping businesses, creators, and startups build modern web experiences.
+        </div>
+      </motion.article>
+    </motion.div>
   )
 }
 
@@ -246,13 +200,10 @@ function ResumeCard() {
 
   return (
     <motion.article
-      variants={cardEntrance}
-      custom={0.12}
-      initial={reduceMotion ? false : 'hidden'}
-      whileInView="visible"
-      viewport={{ once: true, margin: '-70px' }}
-      whileHover={reduceMotion ? undefined : { y: -3 }}
-      transition={{ duration: 0.25, ease: 'easeOut' }}
+      variants={fadeUp}
+      whileHover={
+        reduceMotion ? undefined : { y: -3, transition: { duration: 0.2, ease: motionEase } }
+      }
       className={cn(
         profileGlassCard,
         'grid gap-6 p-5 sm:p-6 lg:col-span-2 lg:grid-cols-[minmax(0,0.9fr)_minmax(18rem,0.95fr)] lg:items-center',
@@ -298,27 +249,31 @@ function ResumeCard() {
 
 export function ProfessionalProfile() {
   return (
-    <section id="about" className="section-spacing scroll-mt-24 overflow-hidden">
+    <section id="about" className="section-spacing scroll-mt-16 overflow-hidden">
       <Container>
         <motion.div
           initial="hidden"
           whileInView="visible"
-          viewport={{ once: true, margin: '-120px' }}
-          transition={{ staggerChildren: 0.1 }}
+          viewport={revealViewport}
+          variants={fadeUp}
         >
-          <motion.div variants={fadeUp}>
-            <SectionHeader
-              eyebrow="About"
-              title="Professional Profile"
-              description="A quick overview of my background, technical strengths, and the work I'm building today."
-            />
-          </motion.div>
+          <SectionHeader
+            eyebrow="About"
+            title="Professional Profile"
+            description="A quick overview of my background, technical strengths, and the work I'm building today."
+          />
+        </motion.div>
 
-          <div className="mt-8 grid gap-5 lg:grid-cols-[minmax(18rem,0.8fr)_minmax(0,1.2fr)] lg:items-stretch">
-            <ProfileCard />
-            <QuickFactsCard />
-            <ResumeCard />
-          </div>
+        <motion.div
+          initial="hidden"
+          whileInView="visible"
+          viewport={revealViewport}
+          variants={staggerContainer}
+          className="mt-8 grid gap-5 lg:grid-cols-[minmax(18rem,0.8fr)_minmax(0,1.2fr)] lg:items-stretch"
+        >
+          <ProfileCard />
+          <QuickFactsCard />
+          <ResumeCard />
         </motion.div>
       </Container>
     </section>

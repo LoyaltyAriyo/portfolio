@@ -14,6 +14,7 @@ import {
 } from 'lucide-react'
 import { motion } from 'framer-motion'
 import { getProjectBySlug } from '../data/projects'
+import { fadeUp } from '../lib/motion'
 import type { ProjectScreenshot } from '../types/project'
 import { Container } from '../components/ui/Container'
 import { ProjectActions } from '../components/projects/ProjectActions'
@@ -62,9 +63,9 @@ export function ProjectDetailPage() {
         </Link>
 
         <motion.section
-          initial={{ opacity: 0, y: 18 }}
-          animate={{ opacity: 1, y: 0 }}
-          transition={{ duration: 0.45, ease: 'easeOut' }}
+          initial="hidden"
+          animate="visible"
+          variants={fadeUp}
           className="grid gap-8 pb-14 pt-8 lg:grid-cols-[1fr_27rem] lg:items-start"
         >
           <div>

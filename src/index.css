@@ -49,6 +49,12 @@
   a {
     -webkit-tap-highlight-color: transparent;
   }
+
+  @media (prefers-reduced-motion: reduce) {
+    html {
+      scroll-behavior: auto;
+    }
+  }
 }
 
 @layer components {

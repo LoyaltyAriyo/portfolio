@@ -2,6 +2,7 @@ import { type FormEvent, useEffect, useState } from 'react'
 import { Check, Copy, Mail, Send } from 'lucide-react'
 import { motion } from 'framer-motion'
 import { contactDetails } from '../../data/profile'
+import { fadeUp, revealViewport, staggerContainer } from '../../lib/motion'
 import { cn } from '../../lib/utils'
 import { Container } from '../ui/Container'
 import { SectionHeader } from '../ui/SectionHeader'
@@ -19,11 +20,6 @@ const initialFormState: ContactFormState = {
   name: '',
   email: '',
   message: '',
-}
-
-const fadeUp = {
-  hidden: { opacity: 0, y: 18 },
-  visible: { opacity: 1, y: 0 },
 }
 
 const inputClassName =
@@ -353,13 +349,13 @@ function ContactForm() {
 
 export function ContactSection() {
   return (
-    <section id="contact" className="section-spacing scroll-mt-24 overflow-hidden">
+    <section id="contact" className="section-spacing scroll-mt-16 overflow-hidden">
       <Container>
         <motion.div
           initial="hidden"
           whileInView="visible"
-          viewport={{ once: true, margin: '-120px' }}
-          transition={{ staggerChildren: 0.08 }}
+          viewport={revealViewport}
+          variants={staggerContainer}
           className="mx-auto max-w-4xl"
         >
           <motion.div variants={fadeUp} className="flex justify-center text-center">

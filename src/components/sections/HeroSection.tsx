@@ -1,21 +1,20 @@
 import { ArrowRight } from 'lucide-react'
 import { motion } from 'framer-motion'
+import { fadeUp, motionEase, staggerContainer } from '../../lib/motion'
 import { Container } from '../ui/Container'
-
-const fadeUp = {
-  hidden: { opacity: 0, y: 18 },
-  visible: { opacity: 1, y: 0 },
-}
 
 export function HeroSection() {
   return (
-    <section id="home" className="relative overflow-hidden pt-32 sm:pt-36">
-      <div className="absolute inset-x-0 top-0 -z-10 h-[34rem] bg-[radial-gradient(circle_at_50%_0%,rgba(56,189,248,0.09),transparent_58%)]" />
-      <Container className="pb-20 pt-8 sm:pb-28">
+    <section
+      id="home"
+      className="relative overflow-hidden pt-32 sm:pt-36 lg:flex lg:min-h-svh lg:items-center lg:pt-16"
+    >
+      <div className="absolute inset-0 -z-10 bg-[radial-gradient(ellipse_75%_62%_at_50%_48%,rgba(56,189,248,0.13)_0%,rgba(37,99,235,0.065)_42%,transparent_74%)]" />
+      <Container className="pb-20 pt-8 sm:pb-28 lg:-translate-y-12 lg:pb-12 lg:pt-16">
         <motion.div
           initial="hidden"
           animate="visible"
-          transition={{ staggerChildren: 0.08 }}
+          variants={staggerContainer}
           className="mx-auto max-w-4xl text-center"
         >
           <motion.div
@@ -43,8 +42,7 @@ export function HeroSection() {
 
           <motion.p
             variants={fadeUp}
-            whileHover={{ y: -1 }}
-            transition={{ duration: 0.2, ease: 'easeOut' }}
+            whileHover={{ y: -1, transition: { duration: 0.2, ease: motionEase } }}
             className="mx-auto mt-8 inline-flex max-w-full items-center justify-center rounded-full border border-white/10 bg-white/[0.05] px-4 py-2 text-sm font-medium text-slate-300 shadow-[0_18px_60px_rgba(56,189,248,0.08)] backdrop-blur-xl transition duration-200 hover:border-accent-300/35 hover:bg-white/[0.075] hover:text-white hover:shadow-[0_18px_70px_rgba(56,189,248,0.14)]"
           >
             NASA Space Apps Challenge Winner • Full-Stack Projects • Real-World Software Solutions
@@ -52,7 +50,7 @@ export function HeroSection() {
 
           <motion.div
             variants={fadeUp}
-            className="mt-8 flex flex-col items-center justify-center gap-3 sm:flex-row"
+            className="mt-8 flex justify-center"
           >
             <a
               href="#projects"
@@ -60,12 +58,6 @@ export function HeroSection() {
             >
               View My Work
               <ArrowRight size={16} />
-            </a>
-            <a
-              href="#contact"
-              className="inline-flex h-11 items-center justify-center rounded-lg border border-white/10 bg-white/[0.06] px-5 text-sm font-semibold text-white transition hover:border-accent-400/50 hover:bg-accent-400/10"
-            >
-              Get In Touch
             </a>
           </motion.div>
         </motion.div>

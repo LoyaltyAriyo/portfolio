@@ -4,26 +4,24 @@ import { Link } from 'react-router-dom'
 import { motion, useScroll, useTransform, useReducedMotion } from 'framer-motion'
 import type { MotionValue } from 'framer-motion'
 import { journeyMilestones, journeySummary, type JourneyMilestone } from '../../data/journey'
+import { fadeUp, motionEase, revealViewport, staggerContainer } from '../../lib/motion'
 import { cn } from '../../lib/utils'
 import { Container } from '../ui/Container'
 import { SectionHeader } from '../ui/SectionHeader'
 
-const cardVariants = {
-  hidden: { opacity: 0, y: 24 },
-  visible: { opacity: 1, y: 0 },
-}
-
 function JourneyCard({ milestone }: { milestone: JourneyMilestone }) {
   const Icon = milestone.icon
+  const reduceMotion = useReducedMotion()
 
   return (
     <motion.article
-      variants={cardVariants}
+      variants={fadeUp}
       initial="hidden"
       whileInView="visible"
-      whileHover={{ y: -3 }}
-      viewport={{ once: true, margin: '-110px' }}
-      transition={{ duration: 0.45, ease: 'easeOut' }}
+      whileHover={
+        reduceMotion ? undefined : { y: -3, transition: { duration: 0.2, ease: motionEase } }
+      }
+      viewport={revealViewport}
       className={cn(
         'group relative overflow-hidden rounded-2xl border border-white/10 bg-surface-900/80 p-5 shadow-[0_24px_80px_rgba(0,0,0,0.22)] backdrop-blur-xl transition duration-300 hover:border-accent-400/45 hover:shadow-glow sm:p-6',
         milestone.featured &&
@@ -141,19 +139,30 @@ export function JourneySection() {
   const LocationIcon = journeySummary.locationIcon
 
   return (
-    <section id="journey" ref={sectionRef} className="section-spacing scroll-mt-24">
+    <section id="journey" ref={sectionRef} className="section-spacing scroll-mt-16">
       <Container>
-        <div className="flex flex-col gap-5 lg:flex-row lg:items-end lg:justify-between">
-          <SectionHeader
-            eyebrow={journeySummary.eyebrow}
-            title={journeySummary.title}
-            description={journeySummary.description}
-          />
-          <div className="inline-flex w-fit items-center gap-2 rounded-full border border-white/10 bg-white/[0.05] px-4 py-2 text-sm font-medium text-slate-300 backdrop-blur">
+        <motion.div
+          initial="hidden"
+          whileInView="visible"
+          viewport={revealViewport}
+          variants={staggerContainer}
+          className="flex flex-col gap-5 lg:flex-row lg:items-end lg:justify-between"
+        >
+          <motion.div variants={fadeUp}>
+            <SectionHeader
+              eyebrow={journeySummary.eyebrow}
+              title={journeySummary.title}
+              description={journeySummary.description}
+            />
+          </motion.div>
+          <motion.div
+            variants={fadeUp}
+            className="inline-flex w-fit items-center gap-2 rounded-full border border-white/10 bg-white/[0.05] px-4 py-2 text-sm font-medium text-slate-300 backdrop-blur"
+          >
             <LocationIcon size={16} className="text-accent-300" aria-hidden="true" />
             Vancouver, BC / Canada
-          </div>
-        </div>
+          </motion.div>
+        </motion.div>
 
         <div className="relative mt-12">
           <div className="absolute bottom-8 left-5 top-8 w-px bg-white/10 lg:left-1/2 lg:-translate-x-1/2" />

@@ -3,13 +3,9 @@ import { AnimatePresence, motion, useReducedMotion } from 'framer-motion'
 import { ArrowRight, Award, Code2, ExternalLink } from 'lucide-react'
 import { Link } from 'react-router-dom'
 import { sortedProjects } from '../../data/projects'
+import { fadeUp, motionEase, revealViewport, staggerContainer } from '../../lib/motion'
 import type { Project, ProjectScreenshot } from '../../types/project'
 import { Container } from '../ui/Container'
-
-const fadeUp = {
-  hidden: { opacity: 0, y: 20 },
-  visible: { opacity: 1, y: 0 },
-}
 
 const caseStudyCopy: Record<
   string,
@@ -57,38 +53,43 @@ export function ProjectShowcase() {
   }
 
   return (
-    <section id="projects" className="section-spacing scroll-mt-24 overflow-hidden">
+    <section id="projects" className="section-spacing scroll-mt-16 overflow-hidden">
       <Container>
         <motion.div
           initial="hidden"
           whileInView="visible"
-          viewport={{ once: true, margin: '-120px' }}
-          transition={{ staggerChildren: 0.08 }}
+          viewport={revealViewport}
+          variants={fadeUp}
+          className="max-w-3xl"
         >
-          <motion.div variants={fadeUp} className="max-w-3xl">
-            <p className="text-sm font-medium uppercase tracking-[0.18em] text-accent-300">
-              Selected Case Studies
-            </p>
-            <h2 className="mt-3 text-3xl font-semibold tracking-normal text-white sm:text-4xl">
-              Building products around real problems.
-            </h2>
-            <p className="mt-4 text-base leading-7 text-slate-400 sm:text-lg">
-              A focused look at software products, full-stack systems, and data-driven experiences
-              I built through team projects and hackathons.
-            </p>
-          </motion.div>
+          <p className="text-sm font-medium uppercase tracking-[0.18em] text-accent-300">
+            Selected Case Studies
+          </p>
+          <h2 className="mt-3 text-3xl font-semibold tracking-normal text-white sm:text-4xl">
+            Building products around real problems.
+          </h2>
+          <p className="mt-4 text-base leading-7 text-slate-400 sm:text-lg">
+            A focused look at software products, full-stack systems, and data-driven experiences
+            I built through team projects and hackathons.
+          </p>
+        </motion.div>
 
-          <div className="mt-14 grid gap-5">
-            <motion.div variants={fadeUp}>
-              <FeaturedCaseStudy project={freshTrace} />
-            </motion.div>
-            <div className="grid gap-5 lg:grid-cols-2">
-              {supportingProjects.map((project) => (
-                <motion.div key={project.id} variants={fadeUp}>
-                  <SupportingCaseStudyCard project={project} />
-                </motion.div>
-              ))}
-            </div>
+        <motion.div
+          initial="hidden"
+          whileInView="visible"
+          viewport={revealViewport}
+          variants={staggerContainer}
+          className="mt-14 grid gap-5"
+        >
+          <motion.div variants={fadeUp}>
+            <FeaturedCaseStudy project={freshTrace} />
+          </motion.div>
+          <div className="grid gap-5 lg:grid-cols-2">
+            {supportingProjects.map((project) => (
+              <motion.div key={project.id} variants={fadeUp}>
+                <SupportingCaseStudyCard project={project} />
+              </motion.div>
+            ))}
           </div>
         </motion.div>
       </Container>
@@ -100,13 +101,7 @@ function FeaturedCaseStudy({ project }: { project: Project }) {
   const copy = caseStudyCopy[project.slug]
 
   return (
-    <motion.article
-      initial={{ opacity: 0, y: 28 }}
-      whileInView={{ opacity: 1, y: 0 }}
-      viewport={{ once: true, margin: '-100px' }}
-      transition={{ duration: 0.5, ease: 'easeOut' }}
-      className="surface-card relative overflow-hidden p-5 sm:p-8 lg:grid lg:grid-cols-[0.74fr_1.26fr] lg:gap-10 lg:p-10"
-    >
+    <article className="surface-card relative overflow-hidden p-5 sm:p-8 lg:grid lg:grid-cols-[0.74fr_1.26fr] lg:gap-10 lg:p-10">
       <div className="pointer-events-none absolute inset-0 bg-[radial-gradient(circle_at_74%_20%,rgba(56,189,248,0.12),transparent_36%)]" />
 
       <div className="relative z-10 flex min-w-0 flex-col justify-center py-2 lg:py-10">
@@ -133,7 +128,7 @@ function FeaturedCaseStudy({ project }: { project: Project }) {
       <div className="relative z-10 mt-10 lg:mt-0">
         <FreshTraceProductShowcase project={project} />
       </div>
-    </motion.article>
+    </article>
   )
 }
 
@@ -263,11 +258,13 @@ function SupportingCaseStudyCard({ project }: { project: Project }) {
   const copy = caseStudyCopy[project.slug]
   const preview = project.screenshots[0]
   const isAwardWinner = project.awards.length > 0
+  const reduceMotion = useReducedMotion()
 
   return (
     <motion.article
-      whileHover={{ y: -5 }}
-      transition={{ duration: 0.22, ease: 'easeOut' }}
+      whileHover={
+        reduceMotion ? undefined : { y: -5, transition: { duration: 0.2, ease: motionEase } }
+      }
       className="surface-card group flex h-full flex-col overflow-hidden p-5 transition duration-300 hover:border-accent-300/30 sm:p-6"
     >
       <ProjectPreviewImage project={project} preview={preview} isAwardWinner={isAwardWinner} />

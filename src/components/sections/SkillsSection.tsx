@@ -1,24 +1,9 @@
 import { motion, useReducedMotion } from 'framer-motion'
-import type { Variants } from 'framer-motion'
 import { coreStack, skillCategories, type SkillCategory } from '../../data/skills'
+import { fadeUp, motionEase, revealViewport, staggerContainer } from '../../lib/motion'
 import { cn } from '../../lib/utils'
 import { Container } from '../ui/Container'
 import { SectionHeader } from '../ui/SectionHeader'
-
-const fadeUp: Variants = {
-  hidden: { opacity: 0, y: 18 },
-  visible: { opacity: 1, y: 0 },
-}
-
-const cardVariants: Variants = {
-  hidden: { opacity: 0, y: 20 },
-  visible: { opacity: 1, y: 0 },
-}
-
-const pillVariants: Variants = {
-  hidden: { opacity: 0, y: 8 },
-  visible: { opacity: 1, y: 0 },
-}
 
 type SkillCardProps = {
   category: SkillCategory
@@ -30,9 +15,10 @@ function SkillCard({ category, reduceMotion }: SkillCardProps) {
 
   return (
     <motion.article
-      variants={cardVariants}
-      whileHover={reduceMotion ? undefined : { y: -4 }}
-      transition={{ duration: 0.24, ease: 'easeOut' }}
+      variants={fadeUp}
+      whileHover={
+        reduceMotion ? undefined : { y: -4, transition: { duration: 0.2, ease: motionEase } }
+      }
       className={cn(
         'group relative flex min-h-[18rem] flex-col overflow-hidden rounded-2xl border border-white/10',
         'bg-[linear-gradient(180deg,rgba(255,255,255,0.07),rgba(255,255,255,0.032))] p-5 shadow-[0_24px_70px_rgba(0,0,0,0.20)] backdrop-blur-xl',
@@ -51,27 +37,16 @@ function SkillCard({ category, reduceMotion }: SkillCardProps) {
         <p className="mt-2 text-sm leading-6 text-slate-400">{category.description}</p>
       </div>
 
-      <motion.div
-        variants={{
-          visible: {
-            transition: {
-              staggerChildren: reduceMotion ? 0 : 0.035,
-              delayChildren: reduceMotion ? 0 : 0.12,
-            },
-          },
-        }}
-        className="relative mt-auto flex flex-wrap gap-2 pt-6"
-      >
+      <div className="relative mt-auto flex flex-wrap gap-2 pt-6">
         {category.skills.map((skill) => (
-          <motion.span
+          <span
             key={skill}
-            variants={pillVariants}
             className="rounded-full border border-white/10 bg-white/[0.045] px-3 py-1.5 text-xs font-medium text-slate-300 transition duration-200 group-hover:border-accent-400/25 group-hover:bg-accent-400/[0.07] group-hover:text-slate-100"
           >
             {skill}
-          </motion.span>
+          </span>
         ))}
-      </motion.div>
+      </div>
     </motion.article>
   )
 }
@@ -81,17 +56,13 @@ export function SkillsSection() {
   const reduceMotion = Boolean(shouldReduceMotion)
 
   return (
-    <section id="skills" className="section-spacing scroll-mt-24 overflow-hidden">
+    <section id="skills" className="section-spacing scroll-mt-16 overflow-hidden">
       <Container>
         <motion.div
           initial="hidden"
           whileInView="visible"
-          viewport={{ once: true, margin: '-120px' }}
-          transition={{
-            duration: reduceMotion ? 0 : 0.45,
-            ease: 'easeOut',
-            staggerChildren: reduceMotion ? 0 : 0.08,
-          }}
+          viewport={revealViewport}
+          variants={staggerContainer}
         >
           <motion.div variants={fadeUp}>
             <SectionHeader
@@ -110,25 +81,22 @@ export function SkillsSection() {
             <span className="leading-6 text-slate-300">{coreStack.join(' · ')}</span>
           </motion.div>
 
-          <motion.div
-            variants={{
-              visible: {
-                transition: {
-                  staggerChildren: reduceMotion ? 0 : 0.075,
-                  delayChildren: reduceMotion ? 0 : 0.06,
-                },
-              },
-            }}
-            className="mt-8 grid gap-5 md:grid-cols-2 xl:grid-cols-3"
-          >
-            {skillCategories.map((category) => (
-              <SkillCard
-                key={category.title}
-                category={category}
-                reduceMotion={reduceMotion}
-              />
-            ))}
-          </motion.div>
+        </motion.div>
+
+        <motion.div
+          initial="hidden"
+          whileInView="visible"
+          viewport={revealViewport}
+          variants={staggerContainer}
+          className="mt-8 grid gap-5 md:grid-cols-2 xl:grid-cols-3"
+        >
+          {skillCategories.map((category) => (
+            <SkillCard
+              key={category.title}
+              category={category}
+              reduceMotion={reduceMotion}
+            />
+          ))}
         </motion.div>
       </Container>
     </section>
