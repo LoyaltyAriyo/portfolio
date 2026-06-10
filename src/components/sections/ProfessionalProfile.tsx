@@ -28,6 +28,11 @@ const profileImage = new URL(
   import.meta.url,
 ).href
 
+const resumePreviewImage = new URL(
+  '../../assets/professional-profile/resume-preview.png',
+  import.meta.url,
+).href
+
 const factIcons = [MapPin, GraduationCap, Layers3, BriefcaseBusiness, Sparkles, BadgeCheck]
 
 const profileGlassCardBase = [
@@ -205,25 +210,30 @@ function ResumePreview() {
   )
 }
 
-function MobileResumeMockup() {
+function MobileResumePreview() {
+  const reduceMotion = useReducedMotion()
+
   return (
-    <div className="relative -translate-y-1 overflow-hidden rounded-2xl border border-white/15 bg-white p-5 shadow-[0_20px_46px_rgba(0,0,0,0.26),0_4px_14px_rgba(0,0,0,0.16)] md:hidden">
-      <span className="rounded-full border border-ink-950/10 bg-slate-100 px-3 py-1 text-xs font-semibold text-ink-950">
+    <div
+      className={cn(
+        'relative -translate-y-1 overflow-hidden rounded-2xl border border-white/15 bg-white p-1.5 shadow-[0_20px_46px_rgba(0,0,0,0.26),0_4px_14px_rgba(0,0,0,0.16)] md:hidden',
+        !reduceMotion && 'rotate-[1deg] transition-transform duration-300 hover:rotate-0',
+      )}
+    >
+      <span className="absolute left-4 top-4 z-10 rounded-full border border-ink-950/10 bg-white/90 px-3 py-1 text-xs font-semibold text-ink-950 shadow-sm backdrop-blur-sm">
         Latest Resume
       </span>
-      <div className="mt-5 space-y-3">
-        <div className="h-3 w-36 rounded-full bg-slate-900" />
-        <div className="h-2 w-48 rounded-full bg-slate-300" />
-        <div className="h-2 w-40 rounded-full bg-slate-200" />
-      </div>
-      <div className="mt-6 grid gap-3">
-        {[0, 1, 2].map((item) => (
-          <div key={item} className="rounded-xl border border-slate-200 p-3">
-            <div className="h-2 w-24 rounded-full bg-slate-300" />
-            <div className="mt-3 h-2 w-full rounded-full bg-slate-200" />
-            <div className="mt-2 h-2 w-4/5 rounded-full bg-slate-100" />
-          </div>
-        ))}
+      <div className="overflow-hidden rounded-[0.7rem] border border-ink-950/10 bg-white">
+        <img
+          src={resumePreviewImage}
+          alt="Preview of Amir Mohammadi's resume"
+          width={2550}
+          height={3300}
+          loading="lazy"
+          decoding="async"
+          sizes="(min-width: 768px) 0px, calc(100vw - 4rem)"
+          className="block h-auto w-full"
+        />
       </div>
     </div>
   )
@@ -281,7 +291,7 @@ function ResumeCard() {
           </div>
         </div>
 
-        <MobileResumeMockup />
+        <MobileResumePreview />
         <ResumePreview />
       </motion.article>
     </motion.div>

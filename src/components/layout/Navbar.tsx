@@ -79,7 +79,7 @@ export function Navbar() {
 
             <a
               href={getAnchorHref('#contact')}
-              className="hidden items-center rounded-full border border-white/10 bg-white/[0.08] px-4 py-2 text-sm font-medium text-white shadow-[inset_0_1px_0_rgba(255,255,255,0.08)] transition duration-200 hover:border-white/[0.15] hover:bg-white/[0.12] hover:text-cyan-100 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-accent-300/40 md:inline-flex"
+              className="hidden items-center rounded-full border border-white/10 bg-white/[0.08] px-4 py-2 text-sm font-medium text-white shadow-[inset_0_1px_0_rgba(255,255,255,0.08)] transition duration-200 hover:border-white/[0.15] hover:bg-white/[0.12] hover:text-cyan-100 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-accent-300/40 lg:inline-flex"
             >
               Get in touch
             </a>
