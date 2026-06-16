@@ -1,6 +1,7 @@
 import { motion, useReducedMotion } from 'framer-motion'
 import { coreStack, skillCategories, type SkillCategory } from '../../data/skills'
 import { fadeUp, motionEase, revealViewport, staggerContainer } from '../../lib/motion'
+import { safeCardReveal, useSafeCardReveal } from '../../lib/safeReveal'
 import { cn } from '../../lib/utils'
 import { Container } from '../ui/Container'
 import { SectionHeader } from '../ui/SectionHeader'
@@ -8,23 +9,19 @@ import { SectionHeader } from '../ui/SectionHeader'
 type SkillCardProps = {
   category: SkillCategory
   reduceMotion: boolean
+  safeReveal: boolean
 }
 
-function SkillCard({ category, reduceMotion }: SkillCardProps) {
+function SkillCard({ category, reduceMotion, safeReveal }: SkillCardProps) {
   const Icon = category.icon
+  const cardClassName = cn(
+    'group relative flex h-full min-h-[18rem] flex-col overflow-hidden rounded-2xl border border-white/10',
+    'bg-[linear-gradient(180deg,rgba(255,255,255,0.07),rgba(255,255,255,0.032))] p-5 shadow-[0_24px_70px_rgba(0,0,0,0.20)] backdrop-blur-xl',
+    'transition duration-300 hover:border-accent-400/35 hover:shadow-[0_26px_90px_rgba(56,189,248,0.12)] sm:p-6',
+  )
 
-  return (
-    <motion.article
-      variants={fadeUp}
-      whileHover={
-        reduceMotion ? undefined : { y: -4, transition: { duration: 0.2, ease: motionEase } }
-      }
-      className={cn(
-        'group relative flex min-h-[18rem] flex-col overflow-hidden rounded-2xl border border-white/10',
-        'bg-[linear-gradient(180deg,rgba(255,255,255,0.07),rgba(255,255,255,0.032))] p-5 shadow-[0_24px_70px_rgba(0,0,0,0.20)] backdrop-blur-xl',
-        'transition duration-300 hover:border-accent-400/35 hover:shadow-[0_26px_90px_rgba(56,189,248,0.12)] sm:p-6',
-      )}
-    >
+  const cardContent = (
+    <>
       <div className="pointer-events-none absolute inset-x-6 top-0 h-px bg-gradient-to-r from-transparent via-white/20 to-transparent" />
       <div className="pointer-events-none absolute -right-12 -top-12 size-32 rounded-full bg-accent-400/0 blur-3xl transition duration-300 group-hover:bg-accent-400/10" />
 
@@ -47,6 +44,28 @@ function SkillCard({ category, reduceMotion }: SkillCardProps) {
           </span>
         ))}
       </div>
+    </>
+  )
+
+  return safeReveal ? (
+    <motion.div
+      variants={safeCardReveal}
+      whileHover={
+        reduceMotion ? undefined : { y: -4, transition: { duration: 0.2, ease: motionEase } }
+      }
+      className="h-full"
+    >
+      <article className={cardClassName}>{cardContent}</article>
+    </motion.div>
+  ) : (
+    <motion.article
+      variants={fadeUp}
+      whileHover={
+        reduceMotion ? undefined : { y: -4, transition: { duration: 0.2, ease: motionEase } }
+      }
+      className={cardClassName}
+    >
+      {cardContent}
     </motion.article>
   )
 }
@@ -54,6 +73,7 @@ function SkillCard({ category, reduceMotion }: SkillCardProps) {
 export function SkillsSection() {
   const shouldReduceMotion = useReducedMotion()
   const reduceMotion = Boolean(shouldReduceMotion)
+  const safeReveal = useSafeCardReveal()
 
   return (
     <section id="skills" className="section-spacing scroll-mt-16 overflow-hidden">
@@ -74,7 +94,7 @@ export function SkillsSection() {
 
           <motion.div
             variants={fadeUp}
-            className="mt-8 inline-flex max-w-full flex-wrap items-center gap-x-2 gap-y-2 rounded-full border border-accent-400/20 bg-white/[0.055] px-4 py-3 text-sm font-medium text-slate-200 shadow-[0_18px_60px_rgba(56,189,248,0.10)] backdrop-blur-xl sm:px-5"
+            className="mt-8 flex max-w-full flex-col items-start gap-2 rounded-2xl border border-white/10 bg-[linear-gradient(180deg,rgba(255,255,255,0.07),rgba(255,255,255,0.032))] px-6 py-5 text-sm font-medium text-slate-200 shadow-[0_18px_60px_rgba(56,189,248,0.10)] backdrop-blur-xl lg:inline-flex lg:flex-row lg:flex-wrap lg:items-center lg:gap-x-2 lg:gap-y-2 lg:rounded-full lg:border-accent-400/20 lg:bg-white/[0.055] lg:px-5 lg:py-3"
           >
             <span className="text-accent-300">Core Stack</span>
             <span className="hidden h-4 w-px bg-white/15 sm:block" />
@@ -87,7 +107,7 @@ export function SkillsSection() {
           initial="hidden"
           whileInView="visible"
           viewport={revealViewport}
-          variants={staggerContainer}
+          variants={safeReveal ? undefined : staggerContainer}
           className="mt-8 grid gap-5 md:grid-cols-2 xl:grid-cols-3"
         >
           {skillCategories.map((category) => (
@@ -95,6 +115,7 @@ export function SkillsSection() {
               key={category.title}
               category={category}
               reduceMotion={reduceMotion}
+              safeReveal={safeReveal}
             />
           ))}
         </motion.div>

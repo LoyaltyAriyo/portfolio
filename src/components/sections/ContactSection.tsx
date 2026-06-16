@@ -3,6 +3,7 @@ import { Check, Copy, Mail, Send } from 'lucide-react'
 import { motion } from 'framer-motion'
 import { contactDetails } from '../../data/profile'
 import { fadeUp, revealViewport, staggerContainer } from '../../lib/motion'
+import { safeCardReveal, useSafeCardReveal } from '../../lib/safeReveal'
 import { cn } from '../../lib/utils'
 import { Container } from '../ui/Container'
 import { SectionHeader } from '../ui/SectionHeader'
@@ -348,6 +349,19 @@ function ContactForm() {
 }
 
 export function ContactSection() {
+  const safeReveal = useSafeCardReveal()
+  const contactCardClassName =
+    'surface-card mt-10 grid gap-8 p-5 transition duration-300 hover:border-accent-400/30 hover:shadow-glow sm:p-7 lg:grid-cols-[minmax(0,0.92fr)_minmax(0,1.08fr)] lg:p-8'
+
+  const contactCardContent = (
+    <>
+      <ContactActionGrid />
+      <div className="rounded-2xl border border-white/10 bg-white/[0.03] p-4 sm:p-5">
+        <ContactForm />
+      </div>
+    </>
+  )
+
   return (
     <section id="contact" className="section-spacing scroll-mt-16 overflow-hidden">
       <Container>
@@ -366,15 +380,15 @@ export function ContactSection() {
             />
           </motion.div>
 
-          <motion.div
-            variants={fadeUp}
-            className="surface-card mt-10 grid gap-8 p-5 transition duration-300 hover:border-accent-400/30 hover:shadow-glow sm:p-7 lg:grid-cols-[minmax(0,0.92fr)_minmax(0,1.08fr)] lg:p-8"
-          >
-            <ContactActionGrid />
-            <div className="rounded-2xl border border-white/10 bg-white/[0.03] p-4 sm:p-5">
-              <ContactForm />
-            </div>
-          </motion.div>
+          {safeReveal ? (
+            <motion.div variants={safeCardReveal}>
+              <div className={contactCardClassName}>{contactCardContent}</div>
+            </motion.div>
+          ) : (
+            <motion.div variants={fadeUp} className={contactCardClassName}>
+              {contactCardContent}
+            </motion.div>
+          )}
         </motion.div>
       </Container>
     </section>

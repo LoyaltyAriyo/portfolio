@@ -5,29 +5,22 @@ import { motion, useScroll, useTransform, useReducedMotion } from 'framer-motion
 import type { MotionValue } from 'framer-motion'
 import { journeyMilestones, journeySummary, type JourneyMilestone } from '../../data/journey'
 import { fadeUp, motionEase, revealViewport, staggerContainer } from '../../lib/motion'
+import { safeCardReveal, useSafeCardReveal } from '../../lib/safeReveal'
 import { cn } from '../../lib/utils'
 import { Container } from '../ui/Container'
 import { SectionHeader } from '../ui/SectionHeader'
 
-function JourneyCard({ milestone }: { milestone: JourneyMilestone }) {
+function JourneyCard({ milestone, safeReveal }: { milestone: JourneyMilestone; safeReveal: boolean }) {
   const Icon = milestone.icon
   const reduceMotion = useReducedMotion()
+  const cardClassName = cn(
+    'group relative overflow-hidden rounded-2xl border border-white/10 bg-surface-900/80 p-5 shadow-[0_24px_80px_rgba(0,0,0,0.22)] backdrop-blur-xl transition duration-300 hover:border-accent-400/45 hover:shadow-glow sm:p-6',
+    milestone.featured &&
+      'border-accent-400/35 bg-[linear-gradient(180deg,rgba(56,189,248,0.13),rgba(255,255,255,0.045)),rgba(15,23,42,0.82)] shadow-[0_24px_90px_rgba(56,189,248,0.16)]',
+  )
 
-  return (
-    <motion.article
-      variants={fadeUp}
-      initial="hidden"
-      whileInView="visible"
-      whileHover={
-        reduceMotion ? undefined : { y: -3, transition: { duration: 0.2, ease: motionEase } }
-      }
-      viewport={revealViewport}
-      className={cn(
-        'group relative overflow-hidden rounded-2xl border border-white/10 bg-surface-900/80 p-5 shadow-[0_24px_80px_rgba(0,0,0,0.22)] backdrop-blur-xl transition duration-300 hover:border-accent-400/45 hover:shadow-glow sm:p-6',
-        milestone.featured &&
-          'border-accent-400/35 bg-[linear-gradient(180deg,rgba(56,189,248,0.13),rgba(255,255,255,0.045)),rgba(15,23,42,0.82)] shadow-[0_24px_90px_rgba(56,189,248,0.16)]',
-      )}
-    >
+  const cardContent = (
+    <>
       <div
         className={cn(
           'pointer-events-none absolute inset-x-8 top-0 h-px bg-gradient-to-r from-transparent via-white/20 to-transparent',
@@ -93,6 +86,33 @@ function JourneyCard({ milestone }: { milestone: JourneyMilestone }) {
           <ArrowUpRight size={16} aria-hidden="true" />
         </Link>
       ) : null}
+    </>
+  )
+
+  return safeReveal ? (
+    <motion.div
+      variants={safeCardReveal}
+      initial="hidden"
+      whileInView="visible"
+      whileHover={
+        reduceMotion ? undefined : { y: -3, transition: { duration: 0.2, ease: motionEase } }
+      }
+      viewport={revealViewport}
+    >
+      <article className={cardClassName}>{cardContent}</article>
+    </motion.div>
+  ) : (
+    <motion.article
+      variants={fadeUp}
+      initial="hidden"
+      whileInView="visible"
+      whileHover={
+        reduceMotion ? undefined : { y: -3, transition: { duration: 0.2, ease: motionEase } }
+      }
+      viewport={revealViewport}
+      className={cardClassName}
+    >
+      {cardContent}
     </motion.article>
   )
 }
@@ -131,6 +151,7 @@ function JourneyNode({
 export function JourneySection() {
   const sectionRef = useRef<HTMLElement | null>(null)
   const shouldReduceMotion = useReducedMotion()
+  const safeReveal = useSafeCardReveal()
   const { scrollYProgress } = useScroll({
     target: sectionRef,
     offset: ['start 65%', 'end 50%'],
@@ -212,7 +233,7 @@ export function JourneySection() {
                       isLeft ? 'lg:col-start-3' : 'lg:col-start-1',
                     )}
                   >
-                    <JourneyCard milestone={milestone} />
+                    <JourneyCard milestone={milestone} safeReveal={safeReveal} />
                   </div>
                 </div>
               )
