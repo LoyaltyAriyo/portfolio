@@ -7,7 +7,7 @@ export const quickFacts = [
   { label: 'Work Authorization', value: 'Eligible to work in Canada' },
 ]
 
-export const resumePath = '/resume/Amir_Mohammadi_Software_Resume.pdf'
+export const resumePath = '/resume/AmirMohammadi_Resume.pdf'
 
 export const contactDetails = {
   email: 'amirhossein1384m@gmail.com',

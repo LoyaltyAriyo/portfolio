@@ -61,15 +61,6 @@ An award-winning hackathon project that uses NASA data to visualize asteroid inf
 - **Awards:** Most Creative Project; Best Use of Data Sources
 - **Live:** [Asteroid Zero](https://asteroidzero.netlify.app/)
 
-## Available Scripts
-
-| Command | Description |
-| --- | --- |
-| `npm run dev` | Starts the Vite development server. |
-| `npm run build` | Type-checks the project and creates a production build. |
-| `npm run lint` | Runs ESLint across the project. |
-| `npm run preview` | Serves the production build locally for review. |
-
 ## Contact
 
 - **Email:** [amirhossein1384m@gmail.com](mailto:amirhossein1384m@gmail.com)
