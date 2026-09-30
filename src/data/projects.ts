@@ -56,8 +56,8 @@ export const projects: Project[] = [
       'learned how to explain technical architecture clearly',
     ],
     awards: [],
-    liveUrl: 'https://freshtrace.app/',
-    githubUrl: 'https://github.com/T5-W26-COMP231/freshtrace',
+    liveUrl: 'https://freshtrace-gules.vercel.app',
+    githubUrl: 'https://github.com/LoyaltyAriyo/freshtrace',
     image: 'freshtrace-product-preview',
     screenshots: [
       { label: 'Home Dashboard', src: freshTraceHomeDashboardImage },
@@ -116,8 +116,8 @@ export const projects: Project[] = [
       'improved API testing and debugging workflow',
     ],
     awards: [],
-    liveUrl: 'https://cafe-195-frontend.onrender.com/',
-    githubUrl: 'https://github.com/ameeshajaswal/Cafe-195',
+    liveUrl: 'https://cafe-195.vercel.app',
+    githubUrl: 'https://github.com/LoyaltyAriyo/Cafe-195',
     image: 'cafe195-ordering-preview',
     screenshots: [
       { label: 'Homepage', src: cafeHomepageImage },
